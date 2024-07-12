@@ -1,4 +1,6 @@
 import 'package:cookbook/category.dart';
+import 'package:cookbook/dummy_data.dart';
+import 'package:cookbook/meals_screen.dart';
 import 'package:flutter/material.dart';
 
 class CategoryGridItem extends StatelessWidget {
@@ -9,7 +11,15 @@ class CategoryGridItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => MealsScreen(
+              title: category.title,
+              meals: dummyMeals
+                  .where((meal) => meal.categories.contains(category.id))
+                  .toList()),
+        ));
+      },
       splashColor: Theme.of(context).primaryColor,
       borderRadius: BorderRadius.circular(16),
       child: Container(
