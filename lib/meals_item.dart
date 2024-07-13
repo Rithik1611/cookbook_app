@@ -1,4 +1,5 @@
 import 'package:cookbook/meal.dart';
+import 'package:cookbook/meal_description.dart';
 import 'package:cookbook/meal_itemtrait.dart';
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -26,6 +27,9 @@ class MealsItem extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       elevation: 2,
       child: InkWell(
+        onTap: () => Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => MealDescription(meal: meal),
+        )),
         child: Stack(
           children: [
             FadeInImage(
@@ -57,6 +61,7 @@ class MealsItem extends StatelessWidget {
                       height: 12,
                     ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         MealItemtrait(
                             icon: Icons.schedule,
