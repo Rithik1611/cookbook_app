@@ -1,5 +1,7 @@
 import 'package:cookbook/categories.dart';
+import 'package:cookbook/meal.dart';
 import 'package:cookbook/meals_screen.dart';
+import 'package:cookbook/side_drawer.dart';
 import 'package:flutter/material.dart';
 
 class Tabs extends StatefulWidget {
@@ -11,6 +13,27 @@ class Tabs extends StatefulWidget {
 
 class _TabsState extends State<Tabs> {
   int _selectedIndex = 0;
+  final List<Meal> favorites = [];
+
+  void _showMessage(String txt) {
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(txt)));
+  }
+
+  void _toggleFavorites(Meal meal) {
+    final isExisting = favorites.contains(meal);
+    if (isExisting) {
+      setState(() {
+        favorites.remove(meal);
+      });
+      _showMessage("Meal removed from Favorites");
+    } else {
+      setState(() {
+        favorites.add(meal);
+      });
+      _showMessage("Meal added to Favorites");
+    }
+  }
 
   void _onSelectIndex(int index) {
     setState(() {
@@ -20,15 +43,16 @@ class _TabsState extends State<Tabs> {
 
   @override
   Widget build(BuildContext context) {
-    Widget activeScreen = const Categories();
+    Widget activeScreen = Categories(onToggle: _toggleFavorites);
     var pagetitle = "Categories";
 
     if (_selectedIndex == 1) {
-      activeScreen = const MealsScreen(meals: []);
+      activeScreen = MealsScreen(meals: favorites, onToggle: _toggleFavorites);
       pagetitle = "Favorites";
     }
 
     return Scaffold(
+      drawer: const SideDrawer(),
       appBar: AppBar(
         title: Text(pagetitle),
         centerTitle: false,

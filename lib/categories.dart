@@ -1,9 +1,11 @@
 import 'package:cookbook/category_grid_item.dart';
 import 'package:cookbook/dummy_data.dart';
+import 'package:cookbook/meal.dart';
 import 'package:flutter/material.dart';
 
 class Categories extends StatelessWidget {
-  const Categories({super.key});
+  const Categories({super.key, required this.onToggle});
+  final void Function(Meal meal) onToggle;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,11 @@ class Categories extends StatelessWidget {
         crossAxisSpacing: 20,
       ),
       children: [
-        for (final i in availableCategories) CategoryGridItem(category: i)
+        for (final i in availableCategories)
+          CategoryGridItem(
+            category: i,
+            onToggle: onToggle,
+          )
       ],
     );
   }
