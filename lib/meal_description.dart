@@ -2,17 +2,27 @@ import 'package:cookbook/meal.dart';
 import 'package:flutter/material.dart';
 
 class MealDescription extends StatelessWidget {
-  const MealDescription({super.key, required this.meal});
+  const MealDescription(
+      {super.key, required this.meal, required this.onToggle});
 
   final Meal meal;
+  final void Function(Meal meal) onToggle;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
           appBar: AppBar(
             title: Text(meal.title),
             centerTitle: false,
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    onToggle(meal);
+                  },
+                  icon: const Icon(Icons.star_border))
+            ],
           ),
           body: ListView(
             padding: const EdgeInsets.all(10),

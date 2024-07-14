@@ -1,12 +1,15 @@
 import 'package:cookbook/category.dart';
 import 'package:cookbook/dummy_data.dart';
+import 'package:cookbook/meal.dart';
 import 'package:cookbook/meals_screen.dart';
 import 'package:flutter/material.dart';
 
 class CategoryGridItem extends StatelessWidget {
-  const CategoryGridItem({super.key, required this.category});
+  const CategoryGridItem(
+      {super.key, required this.category, required this.onToggle});
 
   final Category category;
+  final void Function(Meal meal) onToggle;
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +17,7 @@ class CategoryGridItem extends StatelessWidget {
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => MealsScreen(
+              onToggle: onToggle,
               title: category.title,
               meals: dummyMeals
                   .where((meal) => meal.categories.contains(category.id))

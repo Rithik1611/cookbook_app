@@ -5,9 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class MealsItem extends StatelessWidget {
-  const MealsItem({super.key, required this.meal});
+  const MealsItem({super.key, required this.meal, required this.onToggle});
 
   final Meal meal;
+  final void Function(Meal meal) onToggle;
 
   String get complexitytxt {
     return meal.complexity.name[0].toUpperCase() +
@@ -28,7 +29,10 @@ class MealsItem extends StatelessWidget {
       elevation: 2,
       child: InkWell(
         onTap: () => Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => MealDescription(meal: meal),
+          builder: (context) => MealDescription(
+            meal: meal,
+            onToggle: onToggle,
+          ),
         )),
         child: Stack(
           children: [
