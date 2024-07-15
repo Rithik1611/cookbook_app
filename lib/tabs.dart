@@ -1,8 +1,17 @@
 import 'package:cookbook/categories.dart';
+import 'package:cookbook/dummy_data.dart';
+import 'package:cookbook/filters_screen.dart';
 import 'package:cookbook/meal.dart';
 import 'package:cookbook/meals_screen.dart';
 import 'package:cookbook/side_drawer.dart';
 import 'package:flutter/material.dart';
+
+const kInitialFilters = {
+  Filter.glutenFree: false,
+  Filter.lactoseFree: false,
+  Filter.vegetarian: false,
+  Filter.vegan: false,
+};
 
 class Tabs extends StatefulWidget {
   const Tabs({super.key});
@@ -14,6 +23,7 @@ class Tabs extends StatefulWidget {
 class _TabsState extends State<Tabs> {
   int _selectedIndex = 0;
   final List<Meal> favorites = [];
+  Map<Filter, bool> _selectedFilters = kInitialFilters;
 
   void _showMessage(String txt) {
     ScaffoldMessenger.of(context).clearSnackBars();
@@ -41,9 +51,40 @@ class _TabsState extends State<Tabs> {
     });
   }
 
+  void _screenSelect(String identifier) async {
+    Navigator.of(context).pop();
+    if (identifier == 'filters') {
+      final result =
+          await Navigator.of(context).push<Map<Filter, bool>>(MaterialPageRoute(
+        builder: (context) => FiltersScreen(
+          currentFilters: _selectedFilters,
+        ),
+      ));
+      setState(() {
+        _selectedFilters = result ?? kInitialFilters;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    Widget activeScreen = Categories(onToggle: _toggleFavorites);
+    final availablemeals = dummyMeals.where((meal) {
+      if (_selectedFilters[Filter.glutenFree]! && !meal.isGlutenFree) {
+        return false;
+      }
+      if (_selectedFilters[Filter.lactoseFree]! && !meal.isLactoseFree) {
+        return false;
+      }
+      if (_selectedFilters[Filter.vegetarian]! && !meal.isVegetarian) {
+        return false;
+      }
+      if (_selectedFilters[Filter.vegan]! && !meal.isVegan) {
+        return false;
+      }
+      return true;
+    }).toList();
+    Widget activeScreen =
+        Categories(availablemeals: availablemeals, onToggle: _toggleFavorites);
     var pagetitle = "Categories";
 
     if (_selectedIndex == 1) {
@@ -52,7 +93,7 @@ class _TabsState extends State<Tabs> {
     }
 
     return Scaffold(
-      drawer: const SideDrawer(),
+      drawer: SideDrawer(onSelect: _screenSelect),
       appBar: AppBar(
         title: Text(pagetitle),
         centerTitle: false,

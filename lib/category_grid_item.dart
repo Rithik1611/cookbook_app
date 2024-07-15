@@ -1,15 +1,18 @@
 import 'package:cookbook/category.dart';
-import 'package:cookbook/dummy_data.dart';
 import 'package:cookbook/meal.dart';
 import 'package:cookbook/meals_screen.dart';
 import 'package:flutter/material.dart';
 
 class CategoryGridItem extends StatelessWidget {
   const CategoryGridItem(
-      {super.key, required this.category, required this.onToggle});
+      {super.key,
+      required this.category,
+      required this.onToggle,
+      required this.availablemeals});
 
   final Category category;
   final void Function(Meal meal) onToggle;
+  final List<Meal> availablemeals;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +22,7 @@ class CategoryGridItem extends StatelessWidget {
           builder: (context) => MealsScreen(
               onToggle: onToggle,
               title: category.title,
-              meals: dummyMeals
+              meals: availablemeals
                   .where((meal) => meal.categories.contains(category.id))
                   .toList()),
         ));

@@ -4,8 +4,10 @@ import 'package:cookbook/meal.dart';
 import 'package:flutter/material.dart';
 
 class Categories extends StatelessWidget {
-  const Categories({super.key, required this.onToggle});
+  const Categories(
+      {super.key, required this.onToggle, required this.availablemeals});
   final void Function(Meal meal) onToggle;
+  final List<Meal> availablemeals;
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +22,7 @@ class Categories extends StatelessWidget {
       children: [
         for (final i in availableCategories)
           CategoryGridItem(
+            availablemeals: availablemeals,
             category: i,
             onToggle: onToggle,
           )
