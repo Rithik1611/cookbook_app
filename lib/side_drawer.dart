@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class SideDrawer extends StatelessWidget {
-  const SideDrawer({super.key});
+  const SideDrawer({super.key, required this.onSelect});
+
+  final void Function(String identifier) onSelect;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +46,9 @@ class SideDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              onSelect("meals");
+            },
             leading: const Icon(Icons.restaurant),
             title: Text(
               "Meals",
@@ -53,7 +57,9 @@ class SideDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              onSelect("filters");
+            },
             leading: const Icon(Icons.settings),
             title: Text(
               "Filters",
